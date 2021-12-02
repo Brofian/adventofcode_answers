@@ -35,12 +35,17 @@ class Controller
         echo 'Riddle: '. PHP_EOL;
         echo '   > ' . $riddle->getRiddleDescriptionA(). PHP_EOL;
         echo 'Answer: '. PHP_EOL;
+        $startA = microtime(true);
         echo '   > ' . $riddle->getRiddleAnswerA(). PHP_EOL;
+        echo '   > in ' . (microtime(true) - $startA)*1000 . 'ms' . PHP_EOL;
         echo str_repeat('-', 50). PHP_EOL;
         echo 'Riddle: '. PHP_EOL;
         echo '   > ' . $riddle->getRiddleDescriptionB(). PHP_EOL;
         echo 'Answer: '. PHP_EOL;
+        $startB = microtime(true);
         echo '   > ' . $riddle->getRiddleAnswerB(). PHP_EOL;
+        echo '   > in ' . (microtime(true) - $startB)*1000 . 'ms' . PHP_EOL;
+
     }
 
     protected function getDay(string $year): string {
