@@ -4,13 +4,8 @@ namespace src;
 
 abstract class AbstractRiddle {
 
-    abstract function getRiddleDescriptionA(): string;
+    abstract function getRiddleDescription(): string;
 
-    abstract function getRiddleAnswerA(): string;
-
-    abstract function getRiddleDescriptionB(): string;
-
-    abstract function getRiddleAnswerB(): string;
-
+    abstract function getRiddleAnswer(): string;
 
 }

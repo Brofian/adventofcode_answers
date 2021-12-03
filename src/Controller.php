@@ -9,58 +9,87 @@ class Controller
     protected array $ignoredDirs = ['.', '..', 'src', 'files'];
     protected string $year;
     protected string $day;
+    protected string $task;
 
 
-    public function __construct(string $argYear, string $argDay)
+    public function __construct(string $argYear, string $argDay, string $argTask)
     {
         $this->rootDir = dirname(__DIR__) . '/aoc';
         $this->year = $argYear;
         $this->day = $argDay;
+        $this->task = $argTask;
     }
 
     public function init()
     {
         $year = $this->getYear();
         $day = $this->getDay($year);
+        $task = $this->getTask($year, $day);
 
-        $class = "aoc\\y$year\\day$day";
+        //   aoc\y[year]\day[day]_[task]
+        $class = 'aoc\\y'.$year.'\\day'.$day.'_'.$task;
 
         /** @var AbstractRiddle $riddle */
         $riddle = new $class();
 
-        echo PHP_EOL . PHP_EOL;
-        echo str_repeat('-', 50). PHP_EOL;
-        echo "Year: $year   |   Day: $day". PHP_EOL;
-        echo str_repeat('-', 50). PHP_EOL;
-        echo 'Riddle: '. PHP_EOL;
-        echo '   > ' . $riddle->getRiddleDescriptionA(). PHP_EOL;
-        echo 'Answer: '. PHP_EOL;
-        $startA = microtime(true);
-        echo '   > ' . $riddle->getRiddleAnswerA(). PHP_EOL;
-        echo '   > in ' . (microtime(true) - $startA)*1000 . 'ms' . PHP_EOL;
-        echo str_repeat('-', 50). PHP_EOL;
-        echo 'Riddle: '. PHP_EOL;
-        echo '   > ' . $riddle->getRiddleDescriptionB(). PHP_EOL;
-        echo 'Answer: '. PHP_EOL;
-        $startB = microtime(true);
-        echo '   > ' . $riddle->getRiddleAnswerB(). PHP_EOL;
-        echo '   > in ' . (microtime(true) - $startB)*1000 . 'ms' . PHP_EOL;
+
+        IO::endLine();
+        IO::printBorder(60);
+        IO::printLine("Year: $year   |   Day: $day   |   Task: $task");
+        IO::printBorder(60);
+        IO::printLine('Riddle: ');
+        IO::printLine('   > ' . $riddle->getRiddleDescription());
+        IO::printLine('Answer: ');
+
+        $stopwatch = new Stopwatch();
+        $stopwatch->start();
+        $answer = $riddle->getRiddleAnswer();
+        $stopwatch->stop();
+
+        IO::printLine('   > ' . $answer);
+        IO::printLine('   > in ' . $stopwatch->toMs());
 
     }
 
+    protected function getTask(string $year, string $day): string {
+        $availableDays = array_values(array_diff(scandir($this->rootDir.'/y'.$year), $this->ignoredDirs));
+        $taskRegex = '/^day'.$day.'_([1,2]).php$/m';
+
+        $availableTasks = array_map(function($item) use ($taskRegex) {
+            preg_match($taskRegex, $item, $matches);
+            return $matches[1];
+        }, $availableDays);
+
+
+        if($this->task != '' && in_array($this->task, $availableTasks)) {
+            return $this->task;
+        }
+
+        $task = IO::getUserInput('Which task? ('.implode(',', $availableTasks).') ', (
+            function($answer) use ($availableTasks) {
+                return in_array($answer, $availableTasks);
+            })
+        );
+
+        $this->task = $task;
+        return $task;
+    }
+
+
     protected function getDay(string $year): string {
         $availableDays = array_values(array_diff(scandir($this->rootDir.'/y'.$year), $this->ignoredDirs));
-        $dayRegex = '/^day([0-9]+).php$/m';
+        $dayRegex = '/^day([0-9]+)_[1,2].php$/m';
         $availableDays = array_map(function($item) use ($dayRegex) {
             preg_match($dayRegex, $item, $matches);
             return $matches[1];
         }, $availableDays);
+        $availableDays = array_unique($availableDays);
 
         if($this->day != '' && in_array($this->day, $availableDays)) {
             return $this->day;
         }
 
-        $day = $this->getUserInput('Which day? ('.implode(',', $availableDays).') ', (
+        $day = IO::getUserInput('Which day? ('.implode(',', $availableDays).') ', (
             function($answer) use ($availableDays) {
                 return in_array($answer, $availableDays);
             })
@@ -80,7 +109,7 @@ class Controller
             return $this->year;
         }
 
-        $year = $this->getUserInput('Which year? ('.implode(',', $availableYears).') ', (
+        $year = IO::getUserInput('Which year? ('.implode(',', $availableYears).') ', (
             function($answer) use ($availableYears) {
                 return in_array($answer, $availableYears);
             })
@@ -90,19 +119,6 @@ class Controller
         return $year;
     }
 
-    protected function getUserInput(string $prompt, callable $validationFunc): string
-    {
 
-        $invalidAnswer = false;
-        do {
-            if ($invalidAnswer) {
-                echo "Invalid input, try again! ";
-            }
-            $answer = trim(readline($prompt));
-            $invalidAnswer = !$validationFunc($answer);
-        } while ($invalidAnswer);
-
-        return $answer;
-    }
 
 }
