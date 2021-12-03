@@ -9,15 +9,19 @@ class IO {
     }
 
     public static function printLine(string $text): void {
-        echo $text . PHP_EOL;
+        self::print($text . PHP_EOL);
     }
 
     public static function endLine(): void {
-        echo PHP_EOL;
+        self::print(PHP_EOL);
     }
 
     public static function printBorder(int $length = 30): void {
         self::printLine(str_repeat('-', $length));
+    }
+
+    public static function printError(string $text): void {
+        self::printLine("\e[0;31m".$text."\e[0m");
     }
 
     public static function getUserInput(string $prompt, callable $validationFunc): string
@@ -25,7 +29,7 @@ class IO {
         $invalidAnswer = false;
         do {
             if ($invalidAnswer) {
-                echo "Invalid input, try again! ";
+                self::print("Invalid input, try again! ");
             }
             $answer = trim(readline($prompt));
             $invalidAnswer = !$validationFunc($answer);

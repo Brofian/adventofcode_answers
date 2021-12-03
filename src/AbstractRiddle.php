@@ -4,17 +4,26 @@ namespace src;
 
 abstract class AbstractRiddle {
 
-    abstract function getRiddleDescription(): string;
+    abstract public function getRiddleDescription(): string;
 
-    abstract function getRiddleAnswer(): string;
+    abstract public function getRiddleAnswer(): string;
 
-    protected function readLinesOfFile(string $filepath): array {
-        $lines = file(__DIR__ . '/files/day01.txt');
-        $lines = array_map(function($line) {
-            return (int)trim($line);
-        }, $lines);
+    protected function readLinesOfFile(string $filepath, callable $mapFunc = null): array {
+        $lines = @file($filepath);
+
+        if($lines === false) {
+            IO::printError('   > The given path does not exist: ' . str_replace('/', DIRECTORY_SEPARATOR, $filepath));
+            die();
+        }
+
+        $callback = $mapFunc ?? function($line) {
+            return trim($line);
+        };
+        $lines = array_map($callback, $lines);
 
         return $lines;
     }
+
+
 
 }

@@ -13,7 +13,7 @@ class day01_2 extends AbstractRiddle {
 
     function getRiddleAnswer(): string
     {
-        $lines = $this->readLinesOfFile(__DIR__ . '/files/day01.txt');
+        $lines = $this->readLinesOfFile(__DIR__ . '/files/day01.txt', (function($line) {return (int)trim($line);}));
 
         $sums = [];
         for($i = 0; $i < count($lines)-2; $i++) {

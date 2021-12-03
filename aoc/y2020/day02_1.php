@@ -13,7 +13,7 @@ class day02_1 extends AbstractRiddle {
 
     function getRiddleAnswer(): string
     {
-        $lines = $this->readLinesOfFile(__DIR__ . '/files/day02.txt');
+        $lines = $this->readLinesOfFile(__DIR__ . '/files/day02.txt', (function($line) {return (int)trim($line);}));
 
         $lines = array_map(function($line) {
             preg_match('/([0-9]*)-([0-9]*) (\w): (\w*)/m', $line, $matches);
