@@ -13,7 +13,7 @@ class day02_1 extends AbstractRiddle {
 
     function getRiddleAnswer(): string
     {
-        $lines = $this->readLinesOfFile(__DIR__ . '/files/day02.txt', (function($line) {return (int)trim($line);}));
+        $lines = $this->readLinesOfFile(__DIR__ . '/files/day02.txt', (function($line) {return trim($line);}));
 
         $lines = array_map(function($line) {
             preg_match('/([0-9]*)-([0-9]*) (\w): (\w*)/m', $line, $matches);
@@ -26,15 +26,15 @@ class day02_1 extends AbstractRiddle {
             ];
         }, $lines);
 
-        $solution = null;
+        $solutions = 0;
         foreach($lines as $line) {
             $occurances = substr_count($line['value'], $line['char']);
             if($occurances >= $line['min'] && $occurances <= $line['max']) {
-                $solution++;
+                $solutions++;
             }
         }
 
-        return "$solution";
+        return "$solutions";
     }
 
 }
