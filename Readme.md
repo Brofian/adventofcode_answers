@@ -4,7 +4,7 @@ This repository contains my answers to the "Advent of code" project.
 All code is made by myself, but the puzzles belong completely to https://adventofcode.com/ . 
 I think, Advent of code is a wonderful project, please support them! 
 
-The answers will only be uploaded at least one day after the riddle to prevent any influence on the daily leaderboard.
+The answers will only be uploaded after the daily leaderboard is filled, to prevent any influence.
 Yes, i know that there are better ways to do some of the tasks than you will find here. But i use this project for presentation and other purposes as well, so some answers will be unnecessary long or not optimized. 
 
 How to use:
