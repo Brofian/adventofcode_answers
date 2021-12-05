@@ -24,6 +24,10 @@ class IO {
         self::printLine("\e[0;31m".$text."\e[0m");
     }
 
+    public static function printOverwritableLine($text): void {
+        self::print($text . "\r");
+    }
+
     public static function getUserInput(string $prompt, callable $validationFunc): string
     {
         $invalidAnswer = false;

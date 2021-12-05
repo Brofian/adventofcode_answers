@@ -57,9 +57,12 @@ class Controller
 
         $availableTasks = array_map(function($item) use ($taskRegex) {
             preg_match($taskRegex, $item, $matches);
+            if(empty($matches)) {
+                return null;
+            }
             return $matches[1];
         }, $availableDays);
-
+        $availableTasks = array_filter($availableTasks);
 
         if($this->task != '' && in_array($this->task, $availableTasks)) {
             return $this->task;
