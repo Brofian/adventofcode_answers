@@ -44,7 +44,7 @@ class day08_2 extends AbstractRiddle {
             $this->decipherOutput($line['outputs']);
 
             //concat output numbers and add them to the total output values
-            $totalOutputValues[] = (int)(implode('',$this->decipheredOutputs));
+            $totalOutputValues[] = int_array_to_int($this->decipheredOutputs);
         }
 
         return array_sum($totalOutputValues);
@@ -72,8 +72,8 @@ class day08_2 extends AbstractRiddle {
         $combined4and7 = $this->decipheredNumbers[4] . $this->decipheredNumbers[7];
 
         foreach($numbers as $key => $number) {
-            //find a number, that completely clears abcdf (only the 9 and 8 are capable of this. And the 8 is already out)
-            $remainingChars = str_replace(str_split($number), '', $combined4and7);
+            //find a number, that completely clears $combined4and7 (only the 9 and 8 are capable of this. And the 8 is already out)
+            $remainingChars = str_remove_chars($combined4and7, $number);
             if(strlen($remainingChars) == 0) {
                 $this->decipheredNumbers[9] = $number;
                 unset($numbers[$key]);
@@ -84,9 +84,8 @@ class day08_2 extends AbstractRiddle {
         // now we have found the numbers 1,4,7,8,9 and are missing 2,3,5,6,0
 
 
-
         // now we can find the difference between the 9 with and without the bottom char
-        $bottomChar = str_replace(str_split($combined4and7), '', $this->decipheredNumbers[9]);
+        $bottomChar = str_remove_chars($this->decipheredNumbers[9], $combined4and7);
 
         //   _
         //     |
@@ -95,7 +94,7 @@ class day08_2 extends AbstractRiddle {
 
         foreach($numbers as $key => $number) {
             //find a number, that is cleared completely except one char by $tempTopBottomAndRightTopAndRightBottom (only the 3 is capable of this at this point)
-            $remainingChars = str_replace(str_split($topBottomAndRightTopAndRightBottom), '', $number);
+            $remainingChars = str_remove_chars($number, $topBottomAndRightTopAndRightBottom);
             if(strlen($remainingChars) == 1) {
                 $this->decipheredNumbers[3] = $number;
                 unset($numbers[$key]);
@@ -106,49 +105,32 @@ class day08_2 extends AbstractRiddle {
 
         // now we have found the numbers 1,3,4,7,8,9 and are missing 2,5,6,0
 
-
-        $bottomLeftChar = str_replace(str_split($this->decipheredNumbers[9]), '', $this->decipheredNumbers[8]);
+        $bottomLeftChar = str_remove_chars($this->decipheredNumbers[8], $this->decipheredNumbers[9]);
+        $middleChar = str_remove_chars( $this->decipheredNumbers[3], $this->decipheredNumbers[7].$bottomChar);
 
         foreach($numbers as $key => $number) {
-            $remainingChars = str_replace(str_split($number), '', $this->decipheredNumbers[8]);
-            if(strlen($remainingChars) == 2) {
-                //this number is either 2 or 5, because 0 or 6 would only leave one remaining char
-
-                if(strpos($remainingChars, $bottomLeftChar) !== false) {
-                    //the bottom left char was not removed, so the only possible number is 5
-                    $this->decipheredNumbers[5] = $number;
+            if(strlen($number) == 6) {
+                //either 0 or 6 because they have six segments
+                if(str_contains($number, $middleChar)) {
+                    $this->decipheredNumbers[6] = $number;
                 }
                 else {
-                    //the bottom left char was removed, so the only possible number is 5
-                    $this->decipheredNumbers[2] = $number;
+                    $this->decipheredNumbers[0] = $number;
                 }
-                unset($numbers[$key]);
-
-            }
-        }
-
-
-        // now we have found the numbers 1,2,3,4,5,7,8,9 and are missing 6,0
-
-        foreach($numbers as $key => $number) {
-            // now we have only two numbers left: 0 and 6. So we just have to check, if they remove both parts of 1
-            $remainingChars = str_replace(str_split($number), '', $this->decipheredNumbers[1]);
-            if(strlen($remainingChars) == 0) {
-                //0
-                $this->decipheredNumbers[0] = $number;
-                unset($numbers[$key]);
             }
             else {
-                //6
-                $this->decipheredNumbers[6] = $number;
-                unset($numbers[$key]);
+                //either 2 or 5 because they have 5 segments
+                if(str_contains($number, $bottomLeftChar)) {
+                    $this->decipheredNumbers[2] = $number;
+                }
+                else {
+                    $this->decipheredNumbers[5] = $number;
+                }
             }
-
         }
 
+
         // now we have found the numbers 1,2,3,4,5,6,7,8,9,0 and are missing none! yay!
-
-
 
         // lets sort them. Just for the sake of sorting...
         ksort($this->decipheredNumbers);
@@ -162,12 +144,7 @@ class day08_2 extends AbstractRiddle {
      * @return bool
      */
     protected function codeStringEqualsCodeString(string $code1, string $code2): bool {
-        $code1Arr = str_split($code1);
-        sort($code1Arr);
-        $code2Arr = str_split($code2);
-        sort($code2Arr);
-
-        return empty(array_diff($code1Arr, $code2Arr)) && empty(array_diff($code2Arr, $code1Arr));
+        return str_compare_letters($code1, $code2);
     }
 
 

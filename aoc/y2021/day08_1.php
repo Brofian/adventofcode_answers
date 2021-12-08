@@ -14,7 +14,7 @@ class day08_1 extends AbstractRiddle {
 
     public function getRiddleAnswer(): string
     {
-        $lines = $this->readLinesOfFile(__DIR__ . '/files/day07.txt', (function($line) {
+        $lines = $this->readLinesOfFile(__DIR__ . '/files/day08.txt', (function($line) {
             list($numbers, $outputs) = explode('|', trim($line));
             return [
                 'numbers' => explode(' ', trim($numbers)),
@@ -51,7 +51,6 @@ class day08_1 extends AbstractRiddle {
     protected function countDecipherableNumbers(array $numbers): int {
         $sum = 0;
         foreach($numbers as $number) {
-            var_dump(strlen($number));
             if(in_array(strlen($number), [2,3,4,7])) {
                 $sum++;
             }
