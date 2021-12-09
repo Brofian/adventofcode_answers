@@ -23,12 +23,21 @@ class day09_2 extends AbstractRiddle {
 
 
         $lowestPoints = $this->findLowestPoints();
-        var_dump(count($lowestPoints));
+        //var_dump(count($lowestPoints));
 
         $basins = $this->findBasins($lowestPoints);
+        //var_dump($basins[0]);
 
 
-        return '';
+        $products = [];
+        foreach($basins as $basin) {
+            $products[] = count($basin);
+        }
+        rsort($products);
+
+        $product = $products[0] * $products[1] * $products[2];
+
+        return $product;
     }
 
     protected function findLowestPoints(): array {
@@ -58,9 +67,38 @@ class day09_2 extends AbstractRiddle {
     protected function findBasins(array $lowestPoints): array {
         $basins = [];
 
-        //todo
-        foreach($lowestPoints as $lowestPoint) {
 
+        foreach($lowestPoints as $index => $lowestPoint) {
+            $basinPoints = [];
+            $pointsToCheck = [
+                $lowestPoint['x'].'|'.$lowestPoint['y'] => $lowestPoint
+            ];
+
+            while(!empty($pointsToCheck)) {
+
+                foreach($pointsToCheck as $key => $pointToCheck) {
+
+                    $adjacentHigherPoints = $this->getAdjacentHigherFields($pointToCheck['x'],$pointToCheck['y']);
+                    foreach($adjacentHigherPoints as $adjacentHigherPoint) {
+                        $abbrev = $adjacentHigherPoint['x'].'|'.$adjacentHigherPoint['y'];
+                        //only fields below 9 count towards basins
+
+                        if($adjacentHigherPoint['h'] < 9 && !isset($pointsToCheck[$abbrev]) && !isset($basinPoints[$abbrev])) {
+                            $pointsToCheck[$abbrev] = $adjacentHigherPoint;
+                        }
+                    }
+
+                    //store point as checked and part of basin
+                    $abbrev = $pointToCheck['x'].'|'.$pointToCheck['y'];
+                    if(!isset($basinPoints[$abbrev])) {
+                        $basinPoints[$abbrev] = $pointToCheck;
+                    }
+                    unset($pointsToCheck[$key]);
+                }
+
+            }
+
+            $basins[] = $basinPoints;
         }
 
         return $basins;
@@ -71,17 +109,18 @@ class day09_2 extends AbstractRiddle {
 
         $centerValue = $this->getCoordinateHeight($x,$y);
 
-        if($this->getCoordinateHeight($x,$y-1) > $centerValue) {
-            $adjacentFields[] = ['x' => $x, 'y' => $y-1];
-        }
-        if($this->getCoordinateHeight($x,$y+1) > $centerValue) {
-            $adjacentFields[] = ['x' => $x, 'y' => $y+1];
-        }
-        if($this->getCoordinateHeight($x-1,$y) > $centerValue) {
-            $adjacentFields[] = ['x' => $x-1, 'y' => $y];
-        }
-        if($this->getCoordinateHeight($x+1,$y) > $centerValue) {
-            $adjacentFields[] = ['x' => $x+1, 'y' => $y];
+        $posList = [
+            [$x, $y-1],
+            [$x, $y+1],
+            [$x-1, $y],
+            [$x+1, $y],
+        ];
+        foreach($posList as $pos) {
+            $height = $this->getCoordinateHeight(...$pos);
+
+            if($height > $centerValue) {
+                $adjacentFields[] = ['x' => $pos[0], 'y' => $pos[1], 'h' => $height];
+            }
         }
 
         return $adjacentFields;
@@ -92,7 +131,7 @@ class day09_2 extends AbstractRiddle {
             return (int)$this->lines[$y][$x];
         }
 
-        return 9;
+        return 10;
     }
 
 
