@@ -22,14 +22,14 @@ class day14_2 extends AbstractRiddle {
         }));
         $this->interpretLines($lines);
 
-        for($step = 0; $step < 10; $step++) {
+        for($step = 0; $step < 40; $step++) {
             $this->computeStep();
         }
 
         $mostCommonNum = $this->findMostCommonElementCountInPolymer();
-        //$leastCommonNum = $this->findMostCommonElementCountInPolymer(true);
+        $leastCommonNum = $this->findMostCommonElementCountInPolymer(true);
 
-        return '';
+        return $mostCommonNum-$leastCommonNum;
     }
 
     protected function findMostCommonElementCountInPolymer(bool $returnLeastCommon = false): int {
@@ -38,26 +38,19 @@ class day14_2 extends AbstractRiddle {
         foreach($this->neighbours as $neighbours => $num) {
             list($first,$second) = str_split($neighbours);
 
-            if(!isset($counts[$first])) {
-                $counts[$first] = 0;
-            }
-            $counts[$first] += $num;
-
-
-            if(!isset($counts[$second])) {
-                $counts[$second] = 0;
-            }
-            $counts[$second] += $num;
+            $this->increaseArrayField($counts, $first, $num);
+            $this->increaseArrayField($counts, $second, $num);
         }
 
 
-        sort($counts);
-        var_dump(reset($counts));
+        if($returnLeastCommon) {
+            sort($counts);
+        }
+        else {
+            rsort($counts);
+        }
 
-        rsort($counts);
-        var_dump(reset($counts));
-
-        return 0;
+        return ceil($counts[0]/2);
     }
 
     protected function computeStep(): void {
@@ -65,24 +58,15 @@ class day14_2 extends AbstractRiddle {
         $newNeighbours = [];
 
         foreach($this->neighbours as $neighbours => $num) {
-            var_dump($neighbours .' -> '. $num);
+            //var_dump($neighbours .' -> '. $num);
 
             if(isset($this->replacements[$neighbours])) {
                 list($first,$second) = str_split($neighbours);
 
                 $addition = $this->replacements[$neighbours];
 
-                if(!isset($newNeighbours[$first.$addition])) {
-                    $newNeighbours[$first.$addition] = 0;
-                }
-                $newNeighbours[$first.$addition] += $num;
-
-
-                if(!isset($newNeighbours[$addition.$second])) {
-                    $newNeighbours[$addition.$second] = 0;
-                }
-                $newNeighbours[$addition.$second] += $num;
-
+                $this->increaseArrayField($newNeighbours, $first.$addition, $num);
+                $this->increaseArrayField($newNeighbours, $addition.$second, $num);
 
             }
         }
@@ -96,10 +80,8 @@ class day14_2 extends AbstractRiddle {
             $first = $polymerChars[$i-1];
             $second = $polymerChars[$i];
 
-            if(!isset($newNeighbours[$first.$second])) {
-                $this->neighbours[$first.$second] = 0;
-            }
-            $this->neighbours[$first.$second] += 1;        }
+            $this->increaseArrayField($this->neighbours, $first.$second, 1);
+        }
 
 
         array_shift($lines);
@@ -110,5 +92,11 @@ class day14_2 extends AbstractRiddle {
     }
 
 
+    protected function increaseArrayField(array &$array, string $field, int $num): void {
+        if(!isset($array[$field])) {
+            $array[$field] = 0;
+        }
+        $array[$field] += $num;
+    }
 
 }
