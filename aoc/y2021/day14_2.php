@@ -26,13 +26,12 @@ class day14_2 extends AbstractRiddle {
             $this->computeStep();
         }
 
-        $mostCommonNum = $this->findMostCommonElementCountInPolymer();
-        $leastCommonNum = $this->findMostCommonElementCountInPolymer(true);
+        list($leastCommonNum, $mostCommonNum) = $this->findExtremeValues();
 
         return $mostCommonNum-$leastCommonNum;
     }
 
-    protected function findMostCommonElementCountInPolymer(bool $returnLeastCommon = false): int {
+    protected function findExtremeValues(): array {
 
         $counts = [];
         foreach($this->neighbours as $neighbours => $num) {
@@ -42,15 +41,11 @@ class day14_2 extends AbstractRiddle {
             $this->increaseArrayField($counts, $second, $num);
         }
 
+        sort($counts);
+        $least = ceil($counts[0] / 2);
+        $most = ceil($counts[count($counts)-1] / 2);
 
-        if($returnLeastCommon) {
-            sort($counts);
-        }
-        else {
-            rsort($counts);
-        }
-
-        return ceil($counts[0]/2);
+        return [$least, $most];
     }
 
     protected function computeStep(): void {
