@@ -5,9 +5,11 @@ namespace aoc\y2021;
 use src\AbstractRiddle;
 
 /**
- * @info This file is using my implementation of the Dijkstra algorithm
+ * @Warning Currently, this file is causing an "allowed memory size exhausted" error
  */
-class day15_1 extends AbstractRiddle {
+
+
+class day15_2 extends AbstractRiddle {
 
     protected int $gridWidth;
     protected int $gridHeight;
@@ -24,7 +26,7 @@ class day15_1 extends AbstractRiddle {
 
     public function getRiddleDescription(): string
     {
-        return 'What is the lowest total risk of any path from the top left to the bottom right?';
+        return 'Using the full map, what is the lowest total risk of any path from the top left to the bottom right?';
     }
 
     public function getRiddleAnswer(): string
@@ -49,7 +51,7 @@ class day15_1 extends AbstractRiddle {
             $nearestElementKey = $this->findFieldWithLeastDistance();
             $nearestElement = &$this->totalList[$nearestElementKey];
 
-            if($nearestElement['x'] == $this->gridWidth-1 && $nearestElement['y'] == $this->gridHeight-1) {
+            if($nearestElement['x'] == ($this->gridWidth*5)-1 && $nearestElement['y'] == ($this->gridHeight*5)-1) {
                 //found the target
                 echo str_pad('', 30) . "\r";
                 $result = $nearestElement['dist'];
@@ -67,7 +69,7 @@ class day15_1 extends AbstractRiddle {
             foreach($adjacentFieldKeys as $adjacentFieldKey) {
                 $adjacentField = &$this->totalList[$adjacentFieldKey];
 
-                $totalDistOnThisWay = $nearestElement['dist'] + $this->grid[$adjacentField['y']][$adjacentField['x']];
+                $totalDistOnThisWay = $nearestElement['dist'] + $this->getValueFromField($adjacentField['x'], $adjacentField['y']);
                 $totalDistOnAnotherWay = $adjacentField['dist'];
 
                 if($totalDistOnThisWay < $totalDistOnAnotherWay) {
@@ -77,9 +79,7 @@ class day15_1 extends AbstractRiddle {
                 }
 
                 $this->openList[$adjacentFieldKey] = true;
-
             }
-
         }
 
 
@@ -106,14 +106,23 @@ class day15_1 extends AbstractRiddle {
 
 
     protected function initGrid(): void {
-        for($x = 0; $x < $this->gridWidth; $x++) {
-            for($y = 0; $y < $this->gridHeight; $y++) {
-                $this->totalList["$x-$y"] = [
-                    'dist' => PHP_INT_MAX,
-                    'prev' => null,
-                    'x' => $x,
-                    'y' => $y
-                ];
+        for($xMult = 0; $xMult < 5; $xMult++) {
+            for($yMult = 0; $yMult < 5; $yMult++) {
+
+                for($x = 0; $x < $this->gridWidth; $x++) {
+                    for($y = 0; $y < $this->gridHeight; $y++) {
+                        $xCoord = $xMult * $this->gridWidth + $x;
+                        $yCoord = $yMult * $this->gridHeight + $y;
+
+                        $this->totalList["$xCoord-$yCoord"] = [
+                            'dist' => PHP_INT_MAX,
+                            'prev' => null,
+                            'x' => $xCoord,
+                            'y' => $yCoord
+                        ];
+                    }
+                }
+
             }
         }
 
@@ -128,10 +137,10 @@ class day15_1 extends AbstractRiddle {
         $adjacentFields = [];
 
         $possibilities = [
-            ['check' => $x < $this->gridWidth-1,    'key' => ($x+1).'-'.$y],
-            ['check' => $y < $this->gridHeight-1,   'key' => $x.'-'.($y+1)],
-            ['check' => $x > 0,                     'key' => ($x-1).'-'.$y],
-            ['check' => $y > 0,                     'key' => $x.'-'.($y-1)],
+            ['check' => $x < ($this->gridWidth*5)-1,    'key' => ($x+1).'-'.$y],
+            ['check' => $y < ($this->gridHeight*5)-1,   'key' => $x.'-'.($y+1)],
+            ['check' => $x > 0,                         'key' => ($x-1).'-'.$y],
+            ['check' => $y > 0,                         'key' => $x.'-'.($y-1)],
         ];
 
         foreach($possibilities as $possibility) {
@@ -145,5 +154,22 @@ class day15_1 extends AbstractRiddle {
     }
 
 
+    protected function getValueFromField(int $x, int $y): int {
+
+        $addX = floor($x / $this->gridWidth);
+        $addY = floor($y / $this->gridHeight);
+
+        $x %= $this->gridWidth;
+        $y %= $this->gridHeight;
+        $originalValue = $this->grid[$x][$y];
+
+
+        $newValue = $originalValue + $addX + $addY;
+        while($newValue > 9) {
+            $newValue -= 9;
+        }
+
+        return $newValue;
+    }
 
 }
