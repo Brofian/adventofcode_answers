@@ -52,3 +52,10 @@ function str_remove_chars(string $string, string $charsToRemove): string {
 function int_array_to_int(array $intArray): int {
     return (int)implode('', $intArray);
 }
+
+function dd(...$values) {
+    foreach($values as $value) {
+        var_dump($value);
+    }
+    die();
+}
