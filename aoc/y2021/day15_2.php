@@ -13,6 +13,7 @@ class day15_2 extends AbstractRiddle {
 
     protected int $gridWidth;
     protected int $gridHeight;
+    protected array $targetPosition;
     //the single values of each position
     protected array $grid = [];
 
@@ -31,6 +32,9 @@ class day15_2 extends AbstractRiddle {
 
     public function getRiddleAnswer(): string
     {
+        // i havent got time for any other method than this...
+        ini_set('memory_limit', '256M');
+
 
         $this->grid = $this->readLinesOfFile(__DIR__ . '/files/day15.txt', (function($line) {
             return array_map(function($item) {
@@ -40,6 +44,7 @@ class day15_2 extends AbstractRiddle {
 
         $this->gridWidth = count($this->grid[0]);
         $this->gridHeight = count($this->grid);
+        $this->targetPosition = ['x' => ($this->gridWidth*5)-1, 'y' => ($this->gridHeight*5)-1];
         $this->initGrid();
 
         $result = 0;
@@ -51,7 +56,7 @@ class day15_2 extends AbstractRiddle {
             $nearestElementKey = $this->findFieldWithLeastDistance();
             $nearestElement = &$this->totalList[$nearestElementKey];
 
-            if($nearestElement['x'] == ($this->gridWidth*5)-1 && $nearestElement['y'] == ($this->gridHeight*5)-1) {
+            if($nearestElement['x'] == $this->targetPosition['x'] && $nearestElement['y'] == $this->targetPosition['y']) {
                 //found the target
                 echo str_pad('', 30) . "\r";
                 $result = $nearestElement['dist'];
@@ -93,8 +98,10 @@ class day15_2 extends AbstractRiddle {
     protected function findFieldWithLeastDistance(): string {
         $smallestKey = '0-0';
         $smallestDist = PHP_INT_MAX;
+
         foreach($this->openList as $key => $true) {
             $dist = $this->totalList[$key]['dist'];
+
             if($smallestDist > $dist) {
                 $smallestDist = $dist;
                 $smallestKey = $key;
@@ -116,6 +123,7 @@ class day15_2 extends AbstractRiddle {
 
                         $this->totalList["$xCoord-$yCoord"] = [
                             'dist' => PHP_INT_MAX,
+                            'distToTarget' => $this->getDistanceToTarget($xCoord, $yCoord),
                             'prev' => null,
                             'x' => $xCoord,
                             'y' => $yCoord
@@ -170,6 +178,15 @@ class day15_2 extends AbstractRiddle {
         }
 
         return $newValue;
+    }
+
+    protected function getDistanceToTarget(int $x, int $y): float {
+        $tx = $this->targetPosition['x'];
+        $ty = $this->targetPosition['y'];
+
+        return abs(
+            sqrt(pow($tx-$x, 2) + pow($ty-$y, 2))
+        );
     }
 
 }

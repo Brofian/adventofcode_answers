@@ -59,3 +59,9 @@ function dd(...$values) {
     }
     die();
 }
+
+function ifdd(bool $bool, ...$values): void {
+    if($bool) {
+        dd(...$values);
+    }
+}
