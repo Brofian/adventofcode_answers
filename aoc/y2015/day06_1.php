@@ -6,74 +6,87 @@ use src\AbstractRiddle;
 
 class day06_1 extends AbstractRiddle {
 
-    public const OPERATION_MAP = [
-        'toggle' => 0,
-        'turn on' => 1,
-        'turn off' => 2
-    ];
+    /** @var int[] $lights  */
+    protected array $lights = [];
+
+    /** @var int[] $bitMap */
+    protected array $bitMap = [];
 
     function getRiddleDescription(): string
     {
-        return 'After following the instructions, how many lights are lit?';
+        return 'After following the instructions, how many lights are lit? (Coding Challenge: Make it work for php5.6)';
     }
 
     function getRiddleAnswer(): string
     {
+        // prepare lights array
+        $intSize = $this->getIntSize();
+        for($intPos = 0; $intPos < (1000*1000/$intSize); $intPos++) {
+            $this->lights[$intPos] = $this->lights[$intPos] ?? 0;
+        }
+
         $lines = file(__DIR__ . '/files/day06.txt');
 
         //gather commands
-        $commands = [];
+        [$zero, $operation, $fromX, $fromY, $toX, $toY] = [null, '',0,0,0,0];
         foreach($lines as $line) {
             preg_match('/(.*) ([0-9]*),([0-9]*) through ([0-9]*),([0-9]*)/m', $line, $matches);
-            $commands[] = [
-                'operation' => self::OPERATION_MAP[$matches[1]],
-                'fromX' => $matches[2],
-                'fromY' => $matches[3],
-                'toX' => $matches[4],
-                'toY' => $matches[5],
-            ];
-        }
+            [$zero, $operation, $fromX, $fromY, $toX, $toY] = [...$matches];
 
-        //create light array
-        $lights = [];
-        for($x = 0; $x < 1000; $x++) {
-            $lights[$x] = [];
-            for($y = 0; $y < 1000; $y++) {
-                $lights[$x][$y] = false;
-            }
-        }
 
-        //apply commands
-        foreach($commands as $command) {
+            for($y = $fromY; $y <= $toY; $y++) {
+                for($x = $fromX; $x <= $toX; $x++) {
+                    $bitIndex = $x+($y*1000);
+                    $intPos = floor($bitIndex/$intSize);
+                    $bitPos = $bitIndex % $intSize;
 
-            for($x = $command['fromX']; $x <= $command['toX']; $x++) {
-                for($y = $command['fromY']; $y <= $command['toY']; $y++) {
-                    switch ($command['operation']) {
-                        case 0:
-                            $lights[$x][$y] = !$lights[$x][$y];
+                    $int = &$this->lights[$intPos];
+                    $bit = &$this->bitMap[$bitPos];
+
+                    switch($operation) {
+                        case 'turn on':
+                            $int |= $bit;
                             break;
-                        case 1:
-                            $lights[$x][$y] = true;
+                        case 'turn off':
+                            $int &= ~$bit;
                             break;
-                        case 2:
-                            $lights[$x][$y] = false;
+                        case 'toggle':
+                            $int ^= $bit;
                             break;
                     }
                 }
             }
-
         }
+
 
         //count lit lights
         $count = 0;
-        for($x = 0; $x < 1000; $x++) {
-            for($y = 0; $y < 1000; $y++) {
-                $count += (int)$lights[$x][$y];
-            }
+        foreach($this->lights as $light) {
+            $count += $this->countSetBits($light, $intSize);
         }
 
-
         return $count;
+    }
+
+    protected function countSetBits($int, $intSize): int {
+        $bits = 0;
+        for($i = 0; $i < $intSize; $i++) {
+            $bits = ($int&1) ? $bits+1 : $bits;
+            $int >>= 1;
+        }
+        return $bits;
+    }
+
+    protected function getIntSize(): int {
+        $num = 1;
+        $bits = 0;
+        while($num !== 0) {
+            $this->bitMap[] = $num;
+            $num <<= 1;
+            $bits++;
+        }
+
+        return $bits;
     }
 
 }
