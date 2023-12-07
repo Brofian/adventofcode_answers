@@ -9,7 +9,7 @@ class day02_2 extends AbstractRiddle {
 
     public function getRiddleDescription(): string
     {
-        return 'Check how many of the game results would be possible with the given dice and sum up the round numbers';
+        return 'Check what the minimum number of cubes required for each game would be and sum up the power of these numbers';
     }
 
     public function getRiddleAnswer(): string
