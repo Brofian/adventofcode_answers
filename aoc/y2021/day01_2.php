@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day01_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'Count the number of times the sum of measurements in this sliding window increases';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day01.txt', (function($line) {return (int)trim($line);}));
 

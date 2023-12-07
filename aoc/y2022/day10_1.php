@@ -12,12 +12,12 @@ class day10_1 extends AbstractRiddle {
         'addx' => 2
     ];
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What is the sum of these six signal strengths?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day10.txt', (static function($line) {return trim($line);}));
 

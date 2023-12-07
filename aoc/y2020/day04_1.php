@@ -17,12 +17,12 @@ class day04_1 extends AbstractRiddle {
         //'cid'
     ];
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'Count the number of valid passports - those that have all required fields. Treat cid as optional. In your batch file, how many passports are valid?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day04.txt');
 

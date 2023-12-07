@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day03_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What do you get if you multiply together the number of trees encountered on each of the listed slopes?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day03.txt', (
             function($line) {

@@ -12,12 +12,12 @@ class day10_2 extends AbstractRiddle {
         'addx' => 2
     ];
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What eight capital letters appear on your CRT?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day10.txt', (static function($line) {return trim($line);}));
 

@@ -7,12 +7,12 @@ use src\AbstractRiddle;
 
 class day07_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What is the total size of that directory?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day07.txt', (static function($line) {return trim($line);}));
 

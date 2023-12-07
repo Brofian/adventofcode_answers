@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day04_1 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'In how many assignment pairs does one range fully contain the other?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day04.txt', (static function($line) {return trim($line);}));
 

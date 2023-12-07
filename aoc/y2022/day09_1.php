@@ -11,12 +11,12 @@ class day09_1 extends AbstractRiddle {
         '0-0' => 1
     ];
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'How many positions does the tail of the rope visit at least once?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $moves = $this->readLinesOfFile(__DIR__ . '/files/day09.txt', (static function($line) {return trim($line);}));
 

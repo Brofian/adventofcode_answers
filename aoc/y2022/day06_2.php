@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day06_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'How many characters need to be processed before the first start-of-message marker is detected?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day06.txt', (static function($line) {return trim($line, "\n\r");}));
 

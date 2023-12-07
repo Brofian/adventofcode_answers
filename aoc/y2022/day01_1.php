@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day01_1 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'How many total Calories is that Elf carrying?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day01.txt', (static function($line) {return (int)trim($line);}));
 

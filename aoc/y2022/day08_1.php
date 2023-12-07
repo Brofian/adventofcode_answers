@@ -7,12 +7,12 @@ use src\AbstractRiddle;
 
 class day08_1 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'how many trees are visible from outside the grid?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $trees = $this->readLinesOfFile(__DIR__ . '/files/day08.txt', (static function($line) {return str_split(trim($line));}));
 

@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day02_1 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'How many passwords are valid according to their policies?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day02.txt', (function($line) {return trim($line);}));
 

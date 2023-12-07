@@ -1,7 +1,7 @@
 <?php
 
-spl_autoload_register(function ($class_name) {
-    require_once $class_name . '.php';
+spl_autoload_register(static function ($class_name) {
+    require_once __DIR__ . '/' . str_replace('\\', '/', $class_name) . '.php';
 });
 
 include __DIR__ . '/src/functions.php';

@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day03_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What is the sum of the priorities of those item types?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day03.txt', (static function($line) {return trim($line);}));
 

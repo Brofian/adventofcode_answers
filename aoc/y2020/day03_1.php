@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day03_1 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'Starting at the top-left corner of your map and following a slope of right 3 and down 1, how many trees would you encounter?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day03.txt', (function($line) {return trim($line);}));
         $numLines = count($lines);

@@ -12,12 +12,12 @@ class day06_1 extends AbstractRiddle {
     /** @var int[] $bitMap */
     protected array $bitMap = [];
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'After following the instructions, how many lights are lit? (Coding Challenge: Make it work for php5.6)';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         // prepare lights array
         $intSize = $this->getIntSize();

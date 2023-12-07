@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day05_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'After the rearrangement procedure completes, what crate ends up on top of each stack?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day05.txt', (static function($line) {return trim($line, "\n\r");}));
 

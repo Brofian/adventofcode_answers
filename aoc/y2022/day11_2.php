@@ -8,12 +8,12 @@ use src\AbstractRiddle;
 class day11_2 extends AbstractRiddle {
 
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What is the level of monkey business after 10000 rounds?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day11.txt', (static function($line) {return trim($line);}));
 

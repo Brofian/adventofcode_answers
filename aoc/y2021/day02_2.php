@@ -6,12 +6,12 @@ use src\AbstractRiddle;
 
 class day02_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What do you get if you multiply your final horizontal position by your final depth?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = $this->readLinesOfFile(__DIR__ . '/files/day02.txt');
 

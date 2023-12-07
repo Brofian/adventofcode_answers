@@ -12,12 +12,12 @@ class day06_1 extends AbstractRiddle {
         'turn off' => 2
     ];
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'After following the instructions, how many lights are lit?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $lines = file(__DIR__ . '/files/day06.txt');
 

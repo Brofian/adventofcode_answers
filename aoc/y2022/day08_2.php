@@ -7,12 +7,12 @@ use src\AbstractRiddle;
 
 class day08_2 extends AbstractRiddle {
 
-    function getRiddleDescription(): string
+    public function getRiddleDescription(): string
     {
         return 'What is the highest scenic score possible for any tree?';
     }
 
-    function getRiddleAnswer(): string
+    public function getRiddleAnswer(): string
     {
         $trees = $this->readLinesOfFile(__DIR__ . '/files/day08.txt', (static function($line) {return str_split(trim($line));}));
 
