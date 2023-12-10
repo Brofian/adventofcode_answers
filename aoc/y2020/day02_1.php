@@ -2,7 +2,7 @@
 
 namespace aoc\y2020;
 
-use src\AbstractRiddle;
+use src\PHP\AbstractRiddle;
 
 class day02_1 extends AbstractRiddle {
 

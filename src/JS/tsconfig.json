@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "types": ["node"],
+    "target": "es6",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "./build",
+    "sourceMap": false
+  },
+  "include": [
+    "./**/*.ts",
+    "../../aoc/**/*.ts",
+  ],
+  "exclude": [
+    "./build"
+  ]
+}

@@ -2,7 +2,7 @@
 
 namespace aoc\y2021;
 
-use src\AbstractRiddle;
+use src\PHP\AbstractRiddle;
 
 /**
  * @info This file is using my implementation of the Dijkstra algorithm

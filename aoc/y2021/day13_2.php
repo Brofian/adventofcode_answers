@@ -2,8 +2,7 @@
 
 namespace aoc\y2021;
 
-use src\AbstractRiddle;
-use src\Stopwatch;
+use src\PHP\AbstractRiddle;
 
 class day13_2 extends AbstractRiddle {
 

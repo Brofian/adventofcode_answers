@@ -2,8 +2,7 @@
 
 namespace aoc\y2021;
 
-use src\AbstractRiddle;
-use src\IO;
+use src\PHP\AbstractRiddle;
 use src\ThreadFunction;
 
 class day05_2 extends AbstractRiddle {

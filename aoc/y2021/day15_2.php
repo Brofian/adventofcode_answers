@@ -2,7 +2,7 @@
 
 namespace aoc\y2021;
 
-use src\AbstractRiddle;
+use src\PHP\AbstractRiddle;
 
 /**
  * @Warning Currently, this file is causing an "allowed memory size exhausted" error
