@@ -1,1 +1,3 @@
 ./idea
+src/JS/build/*
+!src/JS/build/.gitkeep
