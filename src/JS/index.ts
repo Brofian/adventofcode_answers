@@ -17,7 +17,9 @@ else {
     try {
         const modulePromise = import(filePath);
         modulePromise.then(module => {
-            const task: AbstractRiddle = module.default.default;
+            const task: AbstractRiddle = module.default;
+
+            task.setRiddleTime(year, day);
             log("Language:");
             log("   > Typescript");
             log("Riddle:");

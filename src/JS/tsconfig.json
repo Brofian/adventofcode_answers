@@ -1,16 +1,13 @@
 {
   "compilerOptions": {
-    "types": ["node"],
-    "target": "es6",
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "lib": ["es2015"],
     "noImplicitAny": true,
     "removeComments": true,
-    "preserveConstEnums": true,
     "outDir": "./build",
-    "sourceMap": false
+    "sourceMap": false,
   },
   "include": [
     "./**/*.ts",

@@ -1,7 +1,7 @@
 import AbstractRiddle from '../../src/JS/AbstractRiddle';
 
-type Card = 'J'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'T'|'Q'|'K'|'A';
-const CARD_ORDER: Card[] = [ 'J','2','3','4','5','6','7','8','9','T','Q','K','A'];
+type Card = '2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'|'T'|'J'|'Q'|'K'|'A';
+const CARD_ORDER: Card[] = [ '2','3','4','5','6','7','8','9','T','J','Q','K','A'];
 
 enum HandType {
     HIGH_CARD,
@@ -18,9 +18,9 @@ type Hand = {
     bid: number
 };
 
-class Y2023_Day07_2 extends AbstractRiddle {
+class Y2023_Day07_1 extends AbstractRiddle {
 
-    riddle: string = "What is the sum of all bids multiplied by their ranks if jokers convert to matching cards?";
+    riddle: string = "What is the sum of all bids multiplied by their ranks?";
 
     run(): number {
 
@@ -59,23 +59,16 @@ class Y2023_Day07_2 extends AbstractRiddle {
     }
 
     getHandType(hand: Hand): HandType {
-        const cardNumbers: number[] = (Array(13) as number[]).fill(0);
+        const cardNumbers: number[] = Array(13).fill(0);
 
         for (const card of hand.cards) {
             const cardIndex = CARD_ORDER.indexOf(card);
             cardNumbers[cardIndex] = (cardNumbers[cardIndex] ?? 0)+1;
         }
 
-        let filteredCardValues = cardNumbers
-            .map((el, index) => {
-                return {card: CARD_ORDER[index], count: el};
-            })
-            .filter(el => el.count > 0)
-            .sort((a,b) => a.count > b.count ? -1 : 1);
-
-
-        // try converting Jokers
-        filteredCardValues = this.convertJokers(filteredCardValues);
+        const filteredCardValues = cardNumbers.map((el, index) => {
+            return {card: CARD_ORDER[index], count: el};
+        }).filter(el => el.count > 0).sort((a,b) => a.count > b.count ? -1 : 1);
 
         switch (filteredCardValues.length) {
             case 1:
@@ -98,25 +91,7 @@ class Y2023_Day07_2 extends AbstractRiddle {
 
     }
 
-    convertJokers(cardValues: {card:Card, count: number}[]): {card:Card, count: number}[] {
-        const jokers = cardValues.filter(el => el.card === 'J');
-
-        if (jokers.length === 0) {
-            return cardValues;
-        }
-
-        const numJokers = jokers[0].count;
-        const remainingCards = cardValues.filter(el => el.card !== 'J');
-        if (remainingCards.length === 0) {
-            return [{card: "A", count: numJokers}];
-        }
-
-
-        remainingCards[0].count += numJokers;
-        return remainingCards;
-    }
-
 }
 
 // noinspection JSUnusedGlobalSymbols
-export default (new Y2023_Day07_2());
+export default (new Y2023_Day07_1());

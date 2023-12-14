@@ -5,7 +5,6 @@ year=$1
 day=$2
 task=$3
 
-
 # ensure variables are filled
 while [ -z "$year" ]; do
   echo "Missing year, please select one: [2000-2100]";
@@ -23,7 +22,7 @@ while [ -z "$task" ]; do
 done
 
 # make sure the day has the right format
-if [[ ${day} -lt 2 ]] ; then
+if [[ ${day} -lt 10 ]] ; then
     day="0${day}"
 fi
 
@@ -59,9 +58,11 @@ case "$fileExtension" in
 
     ts)
       cd src/JS
-      npm run build 1> /dev/null
-      print_header
-      node build/src/JS/index.js $year $day $task
+      npm run build && \
+      (
+        print_header && \
+        node build/src/JS/index.js $year $day $task
+      )
       ;;
 
     *)
