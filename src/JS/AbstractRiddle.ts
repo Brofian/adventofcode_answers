@@ -30,4 +30,12 @@ export default abstract class AbstractRiddle {
         return contents.split('\n');
     }
 
+    createArray<T>(size: number, defaultValue: T): T[] {
+        return [...Array(size)].map(_ => defaultValue);
+    }
+
+    createMappedArray<T>(size: number, defaultValueMap: {(i: number): T}): T[] {
+        return [...Array(size)].map((_,i) => defaultValueMap(i));
+    }
+
 }
