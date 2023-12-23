@@ -13,9 +13,21 @@ export default class Vector {
         return this;
     }
 
+    pull(v: Vector): Vector {
+        this.x = v.x;
+        this.y = v.y;
+        return this;
+    }
+
     add(v: Vector): Vector {
         this.x += v.x;
         this.y += v.y;
+        return this;
+    }
+
+    sub(v: Vector): Vector {
+        this.x -= v.x;
+        this.y -= v.y;
         return this;
     }
 
@@ -52,6 +64,10 @@ export default class Vector {
         return Math.sqrt(this.scalar());
     }
 
+    cross(v: Vector): number {
+        return (this.x * v.y) - (this.y * v.x);
+    }
+
     dist(v: Vector): number {
         return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
     }
@@ -74,7 +90,20 @@ export default class Vector {
         return new Vector(this.x, this.y);
     }
 
+    static create(x: number, y: number): Vector {
+        return new Vector(x,y);
+    }
+
     between(v1: Vector, v2: Vector): boolean {
+        return (
+            this.x > Math.min(v1.x, v2.x) &&
+            this.x < Math.max(v1.x, v2.x) &&
+            this.y > Math.min(v1.y, v2.y) &&
+            this.y < Math.max(v1.y, v2.y)
+        );
+    }
+
+    in(v1: Vector, v2: Vector): boolean {
         return (
             this.x >= Math.min(v1.x, v2.x) &&
             this.x <= Math.max(v1.x, v2.x) &&
