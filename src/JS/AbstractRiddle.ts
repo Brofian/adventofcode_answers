@@ -38,4 +38,10 @@ export default abstract class AbstractRiddle {
         return [...Array(size)].map((_,i) => defaultValueMap(i));
     }
 
+    create2DArray<T>(width: number, height: number, defaultValueMap: {(x: number, y: number): T}): T[][] {
+        return this.createMappedArray(height, (y) =>
+            this.createMappedArray(width, x => defaultValueMap(x,y))
+        );
+    }
+
 }

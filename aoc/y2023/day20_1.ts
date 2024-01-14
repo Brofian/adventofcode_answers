@@ -63,7 +63,7 @@ type System = {[key: string]: Module}
 
 class Y2023_Day20_1 extends AbstractRiddle {
 
-    riddle: string = "";
+    riddle: string = "What is the product of the total low and total high pulses fired after one button press?";
 
     protected system: System = {};
 

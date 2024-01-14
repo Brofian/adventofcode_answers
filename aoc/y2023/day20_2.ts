@@ -4,7 +4,7 @@ import Vector from '../../src/JS/Vector';
 
 class Y2023_Day20_2 extends AbstractRiddle {
 
-    riddle: string = "";
+    riddle: string = "How many button presses are required to trigger a LOW pulse on the rx module?";
 
     run(): number {
 
@@ -49,7 +49,7 @@ class Y2023_Day20_2 extends AbstractRiddle {
 
         (combine these to get the binary representation of the input nodes of the conjunction)
 
-        vv will trigger at 0b111111010001 = 4049, then reset some parts and end up with zero again
+        vv will trigger at 0b111111010001 = 4049, then reset some parts and end up with zero again (found out by adding the binary representation of tehe changes)
         -> it has a cycle of 4049 presses
 
         mr will trigger at 0b111100001011 = 3851, then reset some parts and end up with zero again
