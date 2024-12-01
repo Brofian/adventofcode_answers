@@ -9,6 +9,13 @@ export default abstract class AbstractRiddle {
     private year: string;
     private day: string;
 
+    assert(cond: boolean, err: string = ''): void {
+        if (!cond) {
+            console.log('Assertion failed: ' + err);
+            process.exit();
+        }
+    }
+
     dump(...vars: any[]): void {
         console.log(...vars);
     }
