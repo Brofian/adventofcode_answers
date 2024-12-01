@@ -25,8 +25,9 @@ else {
             log("Riddle:");
             log("   > " + task.riddle);
 
+            const input = task.readInput();
             const start = performance.now();
-            const answer = task.run();
+            const answer = task.run(input);
             const end = performance.now();
 
             log("Answer:");

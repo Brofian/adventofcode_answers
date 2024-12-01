@@ -4,11 +4,10 @@ export default abstract class AbstractRiddle {
 
     abstract riddle: string;
 
-    abstract run(): number;
+    abstract run(input?: string[]): number;
 
     private year: string;
     private day: string;
-
 
     dump(...vars: any[]): void {
         console.log(...vars);
