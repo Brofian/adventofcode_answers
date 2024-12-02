@@ -9,9 +9,9 @@ export default abstract class AbstractRiddle {
     private year: string;
     private day: string;
 
-    assert(cond: boolean, err: string = ''): void {
+    assert(cond: boolean, expectation: string = ''): void {
         if (!cond) {
-            console.log('Assertion failed: ' + err);
+            console.log('Assertion failed: ' + expectation);
             process.exit();
         }
     }
@@ -47,6 +47,13 @@ export default abstract class AbstractRiddle {
     create2DArray<T>(width: number, height: number, defaultValueMap: {(x: number, y: number): T}): T[][] {
         return this.createMappedArray(height, (y) =>
             this.createMappedArray(width, x => defaultValueMap(x,y))
+        );
+    }
+
+    create3DArray<T>(width: number, height: number, depth: number, defaultValueMap: {(x: number, y: number, z: number): T}): T[][][] {
+        return this.createMappedArray(height, (y) =>
+            this.createMappedArray(width, x =>
+                this.createMappedArray(depth, z => defaultValueMap(x,y,z)))
         );
     }
 

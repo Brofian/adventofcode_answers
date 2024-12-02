@@ -7,6 +7,10 @@ export default class Vector {
         this.y = y;
     }
 
+    toString(): string {
+        return `[${this.x},${this.y}]`;
+    }
+
     set(x: number, y: number): Vector {
         this.x = x;
         this.y = y;
