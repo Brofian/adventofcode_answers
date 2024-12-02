@@ -86,6 +86,10 @@ export default class Vector {
         return (this.x === v.x) && (this.y === v.y);
     }
 
+    equalsRaw(x: number, y: number): boolean {
+        return (this.x === x) && (this.y === y);
+    }
+
     clone(): Vector {
         return new Vector(this.x, this.y);
     }

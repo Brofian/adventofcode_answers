@@ -2,151 +2,113 @@ import AbstractRiddle from '../../src/JS/AbstractRiddle';
 import Vector from '../../src/JS/Vector';
 
 
-
 class Y2023_Day21_2 extends AbstractRiddle {
 
     riddle: string = "How many garden plots can be reached in exactly 64 steps?";
 
     protected map: boolean[][];
+    protected mapSize: number = 0;
+    protected startingPosition: Vector = Vector.create(0,0);
 
-    run(): number {
-        const startingPosition: Vector = Vector.create(0,0);
-        this.map = this.readInput().map((line,y) => line.split('').map((char,x) => {
+    run(input: string[]): number {
+
+        this.map = input.map((line,y) => line.split('').map((char,x) => {
             if(char === 'S') {
-                startingPosition.set(x,y);
+                this.startingPosition.set(x,y);
                 return true;
             }
             return char === '.';
         }));
-
+        const numWalkableTiles: number = this.map.reduce((c1, row) => row.reduce(row => row ? 1 : 0, 0) + c1,0);
 
         const mapWidth = this.map[0].length;
         const mapHeight = this.map.length;
 
-        this.filterMapForReachableTiles(startingPosition, mapWidth, mapHeight);
-
-
-
-
-        const freeTilesPerMap = this.map.reduce((carry, row) =>
-            carry + row.reduce((carry2, tile) => carry2 + (tile?1:0), 0), 0);
-
         const stepsToTake = 26501365;
 
-        // because we are going an unequal amount of steps, we can only reach half of the spaces on the map.
-        // But because the map has an uneven number of spaces itself, the reachable tiles switch on all adjacent maps
-        // basically making 0.5/(num of X) of the map available at all times
+        this.assert(mapWidth == mapHeight, 'quadratic tiles');
+        this.mapSize = mapWidth;
+        this.assert(this.mapSize % 2 === 1, 'odd width and height');
+        this.assert(this.startingPosition.x == Math.floor(this.mapSize / 2), 'starting position in the middle of a tile');
+        const halfWidth = Math.floor(this.mapSize / 2);
+        this.assert(stepsToTake % this.mapSize === halfWidth, 'Steps to take being multiple of map width ')
 
-        // calculate the circle in which all tile are placed, that can be reached from the starting points
+        const fieldReach = Math.floor(stepsToTake / this.mapSize);
 
-        const averageAvailabilityPerMap: number = 0.5 * (freeTilesPerMap / (mapWidth*mapHeight));
+        const reachableTilesWhenEven = this.getReachableFieldsWithNSteps(this.mapSize * 2);
+        const reachableTilesWhenOdd = this.getReachableFieldsWithNSteps(this.mapSize * 2 + 1);
 
-        const requiredMapsLeft  = ((stepsToTake - startingPosition.x)/mapWidth) +1;
-        const requiredMapsRight = ((stepsToTake + startingPosition.x)/mapWidth) +1;
-        const requiredMapsUp    = ((stepsToTake - startingPosition.y)/mapHeight)+1;
-        const requiredMapsDown  = ((stepsToTake + startingPosition.y)/mapHeight)+1;
+        const edge = 0.125;
+        const tileWithoutEdge = 1 - edge;
+        const tileWithoutTwoEdges = 1 - 2*edge;
 
-        let mapsFullyInCircle = 0;
-
-        const range = requiredMapsLeft + requiredMapsRight;
-
-        let i = 0;
-
-        for (let mapX = -requiredMapsLeft; mapX < requiredMapsRight; mapX++) {
-            i++;
-
-            if (i%100 === 0) console.log(`${(mapX + requiredMapsLeft) / range}`);
-
-            for (let mapY = -requiredMapsUp; mapY < requiredMapsDown; mapY++) {
-
-                const ul = Vector.create(mapX * mapWidth, mapY * mapHeight);
-                const distUL = Math.abs(ul.x - startingPosition.x) + Math.abs(ul.y - startingPosition.y);
-                if (distUL > stepsToTake) {
-                    continue;
-                }
-
-                const bl = Vector.create(mapX * mapWidth, (mapY+1) * mapHeight);
-                const distBL = Math.abs(bl.x - startingPosition.x) + Math.abs(bl.y - startingPosition.y);
-                if (distBL > stepsToTake) {
-                    continue;
-                }
-
-                const ur = Vector.create((mapX+1) * mapWidth, mapY * mapHeight);
-                const distUR = Math.abs(ur.x - startingPosition.x) + Math.abs(ur.y - startingPosition.y);
-                if (distUR > stepsToTake) {
-                    continue;
-                }
-
-                const br = Vector.create((mapX+1) * mapWidth, (mapY+1) * mapHeight);
-                const distBR = Math.abs(br.x - startingPosition.x) + Math.abs(br.y - startingPosition.y);
-                if (distBR > stepsToTake) {
-                    continue;
-                }
+        let fullEvenFields, fullOddFields, partialOddFields, partialEvenFields;
 
 
-
-                // square is fully contained
-                mapsFullyInCircle++;
-
-            }
+        const widestFullRing = fieldReach % 2 ? 'even' : 'odd';
+        if (widestFullRing === 'even') {
+            fullEvenFields = fieldReach * fieldReach;
+            fullOddFields = (fieldReach - 1) * (fieldReach - 1);
+            partialOddFields =
+                (fieldReach - 1) * 4 * tileWithoutEdge +
+                4 * tileWithoutTwoEdges;
+            partialEvenFields = fieldReach * 4 * edge;
+        }
+        else {
+            fullEvenFields = (fieldReach - 1) * (fieldReach - 1);
+            fullOddFields = fieldReach * fieldReach;
+            partialEvenFields =
+                (fieldReach - 1) * 4 * tileWithoutEdge +
+                4 * tileWithoutTwoEdges;
+            partialOddFields = fieldReach * 4 * edge;
         }
 
+        // we still have a very small error margin
+        console.log(fullOddFields, fullEvenFields, partialOddFields, partialOddFields);
 
-        const areaPerMap = mapWidth * mapHeight;
-        const areaOfCircle = Math.PI * (stepsToTake * stepsToTake);
-        const areaOfPartialMaps = areaOfCircle - (mapsFullyInCircle * areaPerMap);
-
-
-        const freeTilesOutsideCircle = (areaOfPartialMaps / areaPerMap) * freeTilesPerMap;
-        const freeTilesOfMapsInCircle = mapsFullyInCircle * freeTilesPerMap;
-
-
-        return freeTilesOfMapsInCircle + freeTilesOutsideCircle;
+        return (
+            fullEvenFields * reachableTilesWhenEven +
+            partialEvenFields * reachableTilesWhenEven +
+            fullOddFields * reachableTilesWhenOdd +
+            partialOddFields * reachableTilesWhenOdd
+        );
     }
 
+    getReachableFieldsWithNSteps(steps: number): number {
+        let possibleElfPositions: boolean[][] = this.create2DArray(this.mapSize, this.mapSize,
+            (x,y) => this.startingPosition.equalsRaw(x,y)
+        );
 
-    protected filterMapForReachableTiles(start: Vector, mapWidth: number, mapHeight: number): void {
+        for (let i = 0; i < steps; i++) {
 
-        const reachabilityMap = this.create2DArray(mapWidth, mapHeight, (x,y) => false);
-
-        const queue: Vector[] = [start];
-
-        while (queue.length) {
-
-            const current = queue.shift();
-
-            if (reachabilityMap[current.y][current.x]) {
-                continue;
-            }
-
-            reachabilityMap[current.y][current.x] = true;
-
-
-            if (!reachabilityMap[this.mod(current.y + 1, mapHeight)][current.x] && this.map[this.mod(current.y + 1, mapHeight)][current.x]) {
-                queue.push(Vector.create(current.x, this.mod(current.y + 1, mapHeight)));
-            }
-
-            if (!reachabilityMap[this.mod(current.y - 1, mapHeight)][current.x] && this.map[this.mod(current.y - 1, mapHeight)][current.x]) {
-                queue.push(Vector.create(current.x, this.mod(current.y - 1, mapHeight)));
-            }
-            if (!reachabilityMap[current.y][this.mod(current.x + 1, mapWidth)] && this.map[current.y][this.mod(current.x + 1, mapWidth)]) {
-                queue.push(Vector.create(this.mod(current.x + 1, mapWidth), current.y));
-            }
-            if (!reachabilityMap[current.y][this.mod(current.x - 1, mapWidth)] && this.map[current.y][this.mod(current.x - 1, mapWidth)]) {
-                queue.push(Vector.create(this.mod(current.x - 1, mapWidth), current.y));
-            }
+            possibleElfPositions = this.create2DArray(
+                this.mapSize, this.mapSize, (x, y) => {
+                    return this.map[y][x] && (
+                        (y > 0 && possibleElfPositions[y-1][x]) ||
+                        (x > 0 && possibleElfPositions[y][x-1]) ||
+                        (y < this.mapSize-1 && possibleElfPositions[y+1][x]) ||
+                        (x < this.mapSize-1 && possibleElfPositions[y][x+1])
+                    );
+                });
         }
 
+        /*
+        console.log(possibleElfPositions.map((r,y) =>
+            r.map((c,x) => {
+                    if (this.startingPosition.equalsRaw(x,y)) return 'S';
+                    if (!this.map[x][y]) return '#';
+                    if (c) return 'O';
+                    return '.';
+                }).join('')).join('\n'));
+         */
 
-        this.map = reachabilityMap;
+        return possibleElfPositions.reduce(
+            (c1,row) =>
+                c1+row.reduce(
+                    (c2,cell) =>
+                        c2+ (cell ? 1 : 0), 0), 0);
     }
 
-    protected mod(n: number, mod: number): number {
-        if (n >= 0) {
-            return n % mod;
-        }
-        return (n + (Math.ceil(n/mod)+1)*mod);
-    }
 }
 
 // noinspection JSUnusedGlobalSymbols
