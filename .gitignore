@@ -1,3 +1,4 @@
 ./idea
 src/JS/build/*
 !src/JS/build/.gitkeep
+aoc/**/files/*.txt

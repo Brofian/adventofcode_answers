@@ -57,4 +57,14 @@ export default abstract class AbstractRiddle {
         );
     }
 
+    transpose2DArray<T>(matrix: T[][]): T[][] {
+        return this.create2DArray(
+            matrix[0].length,
+            matrix.length,
+            (x,y) => {
+                return matrix[y][x];
+            }
+        );
+    }
+
 }
