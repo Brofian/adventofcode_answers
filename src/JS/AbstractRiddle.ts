@@ -59,10 +59,10 @@ export default abstract class AbstractRiddle {
 
     transpose2DArray<T>(matrix: T[][]): T[][] {
         return this.create2DArray(
-            matrix[0].length,
             matrix.length,
+            matrix[0].length,
             (x,y) => {
-                return matrix[y][x];
+                return matrix[x][y];
             }
         );
     }
