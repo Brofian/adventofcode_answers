@@ -58,6 +58,13 @@ case "$fileExtension" in
 
     ts)
       cd src/JS
+      # install dependencies if required, or if -f is given
+      if [[ "$@" == *"-f"* ]]; then
+        npm install
+      elif [ ! -d "node_modules" ]; then
+        npm install
+      fi
+      # build and run
       npm run build && \
       (
         print_header && \
