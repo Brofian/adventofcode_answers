@@ -3,7 +3,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "ESNext",
-    "lib": ["es2016"],
+    "lib": ["es2017"],
     "noImplicitAny": true,
     "removeComments": true,
     "outDir": "./build",
