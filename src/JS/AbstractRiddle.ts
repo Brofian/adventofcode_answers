@@ -4,7 +4,7 @@ export default abstract class AbstractRiddle {
 
     abstract riddle: string;
 
-    abstract run(input?: string[]): number;
+    abstract run(input?: string[]): number|BigInt;
 
     private year: string;
     private day: string;
