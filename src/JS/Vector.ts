@@ -29,6 +29,12 @@ export default class Vector {
         return this;
     }
 
+    addRaw(x: number, y: number): Vector {
+        this.x += x;
+        this.y += y;
+        return this;
+    }
+
     sub(v: Vector): Vector {
         this.x -= v.x;
         this.y -= v.y;
