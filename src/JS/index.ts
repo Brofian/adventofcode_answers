@@ -14,6 +14,7 @@ if (!year || !day || !task) {
 }
 else {
     const filePath = `../../aoc/y${year}/day${day}_${task}.js`;
+
     try {
         const modulePromise = import(filePath);
         modulePromise.then(module => {

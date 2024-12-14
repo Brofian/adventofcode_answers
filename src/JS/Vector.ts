@@ -125,4 +125,10 @@ export default class Vector {
             this.y <= Math.max(v1.y, v2.y)
         );
     }
+
+    clamp(minX: number, minY: number, maxX: number, maxY: number): Vector {
+        this.x = Math.max(minX, Math.min(this.x, maxX));
+        this.y = Math.max(minY, Math.min(this.y, maxY));
+        return this;
+    }
 }
