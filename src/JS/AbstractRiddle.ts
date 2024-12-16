@@ -50,6 +50,12 @@ export default abstract class AbstractRiddle {
         );
     }
 
+    copy2DArray<T,U>(original: T[][], valueMapping: {(old: T, x: number, y: number): U}): U[][] {
+        return this.createMappedArray(original.length, (y) =>
+            this.createMappedArray(original[0].length, x => valueMapping(original[y][x], x,y))
+        );
+    }
+
     create3DArray<T>(width: number, height: number, depth: number, defaultValueMap: {(x: number, y: number, z: number): T}): T[][][] {
         return this.createMappedArray(height, (y) =>
             this.createMappedArray(width, x =>
