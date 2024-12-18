@@ -8,6 +8,7 @@ export default abstract class AbstractRiddle {
 
     private year: string;
     private day: string;
+    private printedDump: boolean = false;
 
     assert(cond: boolean, expectation: string = ''): void {
         if (!cond) {
@@ -17,7 +18,11 @@ export default abstract class AbstractRiddle {
     }
 
     dump(...vars: any[]): void {
-        console.log(...vars);
+        if (!this.printedDump) {
+            this.printedDump = true;
+            console.log('Dumped values:');
+        }
+        console.log(...vars.map(v => '   ' + v.toString()));
     }
 
     dd(...vars: any[]): void {
