@@ -22,7 +22,7 @@ export default abstract class AbstractRiddle {
             this.printedDump = true;
             console.log('Dumped values:');
         }
-        console.log(...vars.map(v => '   ' + v.toString()));
+        console.log(...vars);
     }
 
     dd(...vars: any[]): void {
