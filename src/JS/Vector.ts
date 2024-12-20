@@ -57,6 +57,12 @@ export default class Vector {
         return this.scale(-1);
     }
 
+    abs(): Vector {
+        this.x = Math.abs(this.x);
+        this.y = Math.abs(this.y);
+        return this;
+    }
+
     scale(n: number): Vector {
         this.x *= n;
         this.y *= n;
@@ -84,6 +90,14 @@ export default class Vector {
 
     distSqr(v: Vector): number {
         return Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2);
+    }
+
+    /**
+     * Returns the distance between two vectors , if only walking in cardinal directions is allowed
+     * @param v
+     */
+    cardinalDist(v: Vector): number {
+        return Math.abs(this.x - v.x) + Math.abs(this.y - v.y);
     }
 
     normalize(): Vector {
