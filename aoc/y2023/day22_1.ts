@@ -46,7 +46,7 @@ class Y2023_Day22_1 extends AbstractRiddle {
             return c;
         }, new Vector3D(0,0,0));
 
-        this.grid = this.create3DArray(extents.x, extents.y, extents.z, () => undefined);
+        this.grid = this.create3DArray(extents.x, extents.y, extents.z, (): Brick => undefined);
 
 
         this.assert(this.bricks.every(brick => brick[0].z > 0), 'All bricks starting in the air');

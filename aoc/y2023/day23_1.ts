@@ -22,7 +22,7 @@ class Y2023_Day23_1 extends AbstractRiddle {
 
         // Dijkstra with inverse rating (longer paths are better)
 
-        const prevGrid: PrevDirection[][] = this.create2DArray(height, width, _ => undefined);
+        const prevGrid: PrevDirection[][] = this.create2DArray(height, width, (_): [number, number, number]|undefined => undefined);
         prevGrid[start.y][start.x] = [0,0,0]; // no prev direction and zero distance to the start
 
         const queue: Vector[] = [start];

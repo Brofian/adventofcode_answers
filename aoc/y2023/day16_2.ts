@@ -26,8 +26,8 @@ class BeamHead {
 
     /**
      * Move the beam one step in the current direction and return if it is still inside the map
-     * @param this.mapWidth
-     * @param this.mapHeight
+     * @param mapWidth
+     * @param mapHeight
      */
     step(mapWidth: number, mapHeight: number): boolean {
         this.position.add(this.direction);
@@ -87,7 +87,7 @@ class Y2023_Day16_2 extends AbstractRiddle {
 
 
         const energyMap: number[][] = this.createMappedArray(this.mapHeight, () => this.createArray(this.mapWidth, 0));
-        const beamMap: string[][][] = this.createMappedArray(this.mapHeight, () => this.createMappedArray(this.mapWidth, _ => []));
+        const beamMap: string[][][] = this.createMappedArray(this.mapHeight, () => this.createMappedArray(this.mapWidth, (_): string[] => []));
 
         // loop until no changes happen anymore
         while (beamParts.length > 0) {

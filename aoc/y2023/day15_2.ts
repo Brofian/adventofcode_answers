@@ -22,7 +22,7 @@ class Y2023_Day15_2 extends AbstractRiddle {
 
     riddle: string = "What is the combined focal power after implementing the lenses according to the instructions?";
 
-    boxes: Lens[][] = [...Array(256)].map(_ => []);
+    boxes: Lens[][] = [...Array(256)].map((_): Lens[] => []);
 
     run(): number {
         const regex = /(\D+)(=|-)(\d*)/;

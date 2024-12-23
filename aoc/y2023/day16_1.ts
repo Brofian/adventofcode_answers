@@ -58,7 +58,7 @@ class Y2023_Day16_1 extends AbstractRiddle {
         ];
 
         const energyMap: number[][] = this.createMappedArray(mapHeight, () => this.createArray(mapWidth, 0));
-        const beamMap: string[][][] = this.createMappedArray(mapHeight, () => this.createMappedArray(mapWidth, _ => []));
+        const beamMap: string[][][] = this.createMappedArray(mapHeight, () => this.createMappedArray(mapWidth, (_): string[] => []));
 
         // loop until no changes happen anymore
         while (beamParts.length > 0) {

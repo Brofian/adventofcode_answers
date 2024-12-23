@@ -36,8 +36,8 @@ class Y2024_Day04_1 extends AbstractRiddle {
 
         //create diagonal lines
         this.assert(inputChars.every(line => line.length === inputChars[0].length), 'Rectangular input');
-        const diagonals = this.createMappedArray(inputChars.length + inputChars[0].length - 1, () => []);
-        const reverseDiagonals = this.createMappedArray(inputChars.length + inputChars[0].length - 1, () => []);
+        const diagonals = this.createMappedArray(inputChars.length + inputChars[0].length - 1, (): string[] => []);
+        const reverseDiagonals = this.createMappedArray(inputChars.length + inputChars[0].length - 1, (): string[] => []);
         for (let y = 0; y < inputChars.length; y++) {
             for (let x = 0; x < inputChars[y].length && y+x < inputChars.length; x++) {
                 diagonals[y].push(inputChars[y+x][x]);
