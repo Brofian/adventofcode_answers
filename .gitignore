@@ -3,3 +3,4 @@ src/JS/build/*
 src/JS/node_modules
 !src/JS/build/.gitkeep
 aoc/**/files/*.txt
+aoc/**/*.sql
