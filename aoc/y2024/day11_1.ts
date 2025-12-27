@@ -1,5 +1,5 @@
 import AbstractRiddle from '../../src/JS/AbstractRiddle';
-import Vector from "../../src/JS/Vector";
+import Vector from "../../src/JS/Geometry/Vector";
 
 class Y2024_Day11_1 extends AbstractRiddle {
 

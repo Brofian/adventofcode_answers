@@ -25,7 +25,7 @@ export default abstract class AbstractRiddle {
         console.log(...vars);
     }
 
-    dd(...vars: any[]): void {
+    dd(...vars: any[]): never {
         this.dump(...vars)
         process.exit();
     }

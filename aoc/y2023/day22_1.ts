@@ -1,5 +1,5 @@
 import AbstractRiddle from '../../src/JS/AbstractRiddle';
-import Vector3D from "../../src/JS/Vector3D";
+import Vector3D from "../../src/JS/Geometry/Vector3D";
 
 
 type Brick = [Vector3D, Vector3D];

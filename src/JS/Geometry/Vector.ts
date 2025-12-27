@@ -8,7 +8,7 @@ export default class Vector {
     }
 
     toString(): string {
-        return `[${this.x},${this.y}]`;
+        return `(${this.x},${this.y})`;
     }
 
     set(x: number, y: number): Vector {

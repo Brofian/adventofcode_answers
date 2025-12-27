@@ -1,6 +1,6 @@
 import AbstractRiddle from '../../src/JS/AbstractRiddle';
-import Vector from "../../src/JS/Vector";
-import Vector3D from "../../src/JS/Vector3D";
+import Vector from "../../src/JS/Geometry/Vector";
+import Vector3D from "../../src/JS/Geometry/Vector3D";
 
 type PrevDirection = [number,number,number]|undefined;
 
